@@ -21,7 +21,7 @@ struct ContentView: View {
         Segment(text: "50%", isBlack: true),
         Segment(text: "60%", isBlack: false),
         Segment(text: "70%", isBlack: true),
-        Segment(text: "%08", isBlack: false),
+        Segment(text: "80%", isBlack: false),
         Segment(text: "", isBlack: true, hasGiftIcon: true)
     ]
     
@@ -40,26 +40,29 @@ struct ContentView: View {
                 // Wheel with pointer
                 ZStack {
                     // Pointer (triangle)
-                    Triangle()
+                    //                    Triangle()
+                    //                        .frame(width: 30, height: 40)
+                    //                        .foregroundColor(.black)
+                    //                        .offset(y: -205)
+                    //                        .zIndex(2)
+                    Image(.icArrow)
                         .frame(width: 30, height: 40)
                         .foregroundColor(.black)
-                        .offset(y: -205)
+                        .offset(y: -190)
                         .zIndex(2)
                     
-                    // Outer gray ring
-                    Circle()
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(width: 410, height: 410)
                     
-                    // Outer gray border circle
+                    // Outer gray border circle with visible gradient
                     Circle()
-                        .stroke(LinearGradient(
-                            gradient: Gradient(colors: [.gray.opacity(0.6), .gray]),
-                            startPoint: .top,
-                            endPoint: .bottom
-                        ), lineWidth: 20)
-                        .shadow(color: .gray.opacity(0.5), radius: 5)
+                        .stroke(RadialGradient(
+                            colors: [.black, .gray],
+                            center: .center,
+                            startRadius: 190,  // Inner radius of the gradient
+                            endRadius: 200     // Outer radius of the gradient
+                        ), lineWidth: 30)
+                        
                         .frame(width: 400, height: 400)
+                    
                     
                     // Inner black border
                     Circle()
@@ -78,7 +81,7 @@ struct ContentView: View {
                     }
                     .frame(width: 360, height: 360)
                     .rotationEffect(.degrees(rotation))
-                    .animation(isSpinning ? Animation.easeOut(duration: 5).delay(0.1) : .default, value: rotation)
+                    .animation(isSpinning ? Animation.easeOut(duration: 2).delay(0.1) : .default, value: rotation)
                     
                     // Center circle with Apple logo
                     ZStack {
@@ -87,13 +90,14 @@ struct ContentView: View {
                             .frame(width: 80, height: 80)
                         
                         Circle()
-                            .stroke(LinearGradient(
-                                gradient: Gradient(colors: [.gray.opacity(0.5), .gray]),
-                                startPoint: .top,
-                                endPoint: .bottom
+                            .stroke(RadialGradient(
+                                gradient: Gradient(colors: [.gray, .gray.opacity(0.5)]),
+                                center: .center,
+                                startRadius: 40,
+                                endRadius: 35
                             ), lineWidth: 5)
                             .frame(width: 80, height: 80)
-                            
+                        
                         Image(systemName: "applelogo")
                             .resizable()
                         
@@ -187,25 +191,25 @@ struct WheelSegment: View {
             Path { path in
                 path.move(to: CGPoint(x: 180, y: 180))
                 path.addArc(center: CGPoint(x: 180, y: 180),
-                           radius: 180,
-                           startAngle: startAngle,
-                           endAngle: endAngle,
-                           clockwise: false)
+                            radius: 180,
+                            startAngle: startAngle,
+                            endAngle: endAngle,
+                            clockwise: false)
                 path.closeSubpath()
             }
             .fill(segment.isBlack ? Color.black : Color.white)
-            .overlay(
-                Path { path in
-                    path.move(to: CGPoint(x: 180, y: 180))
-                    path.addArc(center: CGPoint(x: 180, y: 180),
-                               radius: 180,
-                               startAngle: startAngle,
-                               endAngle: endAngle,
-                               clockwise: false)
-                    path.closeSubpath()
-                }
-                .stroke(Color.black, lineWidth: 1)
-            )
+            //            .overlay(
+            //                Path { path in
+            //                    path.move(to: CGPoint(x: 180, y: 180))
+            //                    path.addArc(center: CGPoint(x: 180, y: 180),
+            //                               radius: 180,
+            //                               startAngle: startAngle,
+            //                               endAngle: endAngle,
+            //                               clockwise: false)
+            //                    path.closeSubpath()
+            //                }
+            //                .stroke(Color.black, lineWidth: 1)
+            //            )
             
             // Text or icon
             Group {
