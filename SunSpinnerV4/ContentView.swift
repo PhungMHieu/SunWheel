@@ -12,7 +12,7 @@ struct ContentView: View {
     @State private var rotation: Double = 0
     @State private var isSpinning = false
     @State private var winner: String?
-    
+    //    @State private var moveLeft = false
     // Define segments for the wheel - exactly matching the image
     let segments = [
         Segment(text: "20%", isBlack: false),
@@ -27,9 +27,6 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            // Background
-            Color(UIColor.systemGray6).edgesIgnoringSafeArea(.all)
-            
             VStack {
                 // Title
                 Text("Spin to Win")
@@ -39,36 +36,29 @@ struct ContentView: View {
                 
                 // Wheel with pointer
                 ZStack {
-                    // Pointer (triangle)
-                    //                    Triangle()
-                    //                        .frame(width: 30, height: 40)
-                    //                        .foregroundColor(.black)
-                    //                        .offset(y: -205)
-                    //                        .zIndex(2)
                     Image(.icArrow)
                         .frame(width: 30, height: 40)
-                        .foregroundColor(.black)
-                        .offset(y: -190)
+                        .offset(y: -180)
                         .zIndex(2)
-                    
-                    
                     // Outer gray border circle with visible gradient
-                    Circle()
-                        .stroke(RadialGradient(
-                            colors: [.black, .gray],
-                            center: .center,
-                            startRadius: 190,  // Inner radius of the gradient
-                            endRadius: 200     // Outer radius of the gradient
-                        ), lineWidth: 30)
-                        
-                        .frame(width: 400, height: 400)
-                    
-                    
-                    // Inner black border
-                    Circle()
-                        .stroke(Color.black, lineWidth: 12)
-                        .frame(width: 370, height: 370)
-                    
+                    //                    Circle()
+                    //                        .stroke(RadialGradient(
+                    //                            colors: [.black, .gray],
+                    //                            center: .center,
+                    //                            startRadius: 190,  // Inner radius of the gradient
+                    //                            endRadius: 200     // Outer radius of the gradient
+                    //                        ), lineWidth: 30)
+                    //
+                    //                        .frame(width: 400, height: 400)
+                    //
+                    //
+                    //                    // Inner black border
+                    //                    Circle()
+                    //                        .stroke(Color.black, lineWidth: 12)
+                    //                        .frame(width: 370, height: 370)
+                    Image(.icWheel)
+                        .resizable()
+                    //                        .frame(width: 400, height: 400)
                     // Wheel with segments
                     ZStack {
                         ForEach(0..<segments.count, id: \.self) { index in
@@ -159,19 +149,6 @@ struct ContentView: View {
         }
     }
 }
-
-// Shape for the pointer triangle
-struct Triangle: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        path.move(to: CGPoint(x: rect.midX, y: rect.minY))
-        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
-        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
-        path.addLine(to: CGPoint(x: rect.midX, y: rect.minY))
-        return path
-    }
-}
-
 // Model for wheel segments
 struct Segment {
     let text: String
